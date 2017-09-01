@@ -42,12 +42,14 @@ bool LinkedList<T>::search(T value) const
 {
 	Node<T>* temp = m_front;
 	bool isFound = false;
-	while(!isFound){
+	if (m_front != nullptr){
+		while(!isFound && temp != nullptr){
 		if (temp->getValue() == value){
 			isFound = true;
 		}
 		else{
-			temp = temp->getNext();
+				temp = temp->getNext();
+			}
 		}
 	}
 	return(isFound);
@@ -113,17 +115,22 @@ bool LinkedList<T>::removeBack()
 		isRemoved = false;
 	}
 	else if (temp->getNext() == nullptr){
+		delete(m_front);
+		m_size--;
 		m_front = nullptr;
 		isRemoved = true;
 	}
 	else{
-		while (temp->getNext()->getNext() != nullptr){
-			temp = temp->getNext();
-		}
 		secondintoLast = temp;
 		lastNode = temp->getNext();
-		secondintoLast->setNext(nullptr);
+		while(lastNode->getNext() != nullptr){
+			secondintoLast = lastNode;
+			lastNode = lastNode->getNext();	
+		}
 		delete(lastNode);
+		m_size--;
+		lastNode = nullptr;
+		secondintoLast->setNext(nullptr);
 	}
 	return(isRemoved);
 }	
